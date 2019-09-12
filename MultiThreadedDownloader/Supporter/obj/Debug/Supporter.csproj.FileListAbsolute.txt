@@ -4,3 +4,9 @@ D:\Siemens Training\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.csproj
 D:\Siemens Training\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.csproj.CoreCompileInputs.cache
 D:\Siemens Training\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.dll
 D:\Siemens Training\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.pdb
+C:\Siemens PRoject\MultiThreadedDownloader\Supporter\bin\Debug\Supporter.dll
+C:\Siemens PRoject\MultiThreadedDownloader\Supporter\bin\Debug\Supporter.pdb
+C:\Siemens PRoject\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.csprojAssemblyReference.cache
+C:\Siemens PRoject\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.csproj.CoreCompileInputs.cache
+C:\Siemens PRoject\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.dll
+C:\Siemens PRoject\MultiThreadedDownloader\Supporter\obj\Debug\Supporter.pdb

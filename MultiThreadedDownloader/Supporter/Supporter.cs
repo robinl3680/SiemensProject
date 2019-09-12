@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Supporter
 {
-    public delegate void HelperDownload(string fileName, double x);
+    public delegate void HelperDownload(string fileName, double x, int y);
     public delegate void DownloadComplete(string fileName);
     public class DisplayClass
     {

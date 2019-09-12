@@ -15,20 +15,24 @@ namespace MultiThreadedDownloader.UserInterface
     public partial class UserInterface : Form
     {
         MultiThreadDownloader downloader;
+        Dictionary<string, double> displays = new Dictionary<string, double>();
         public UserInterface()
         {
             InitializeComponent();
+            dataGridView1.Columns.Add("Name", "Name");
+            dataGridView1.Columns.Add("Bytes", "Bytes");
         }
-        public void UpdateProgress(string fileName,double x)
+        public void UpdateProgress(string fileName,double x,int y)
         {
-            //prgs_download.Value = x;
+            prgs_download.Value = y;
             lbl_prgrs.Text = fileName;
-            DisplayClass display = new DisplayClass { FileName = fileName, ByteReceived = x };
-            List<DisplayClass> displays = new List<DisplayClass> { display };
+            //DisplayClass display = new DisplayClass { FileName = fileName, ByteReceived = x };
+            //List<DisplayClass> displays = new List<DisplayClass> { display };
+            displays[fileName] = x;
             var datasource = from a in displays
                              select new
-                             { Name = a.FileName, ByteReceived = a.ByteReceived };
-            dataGridView1.DataSource = datasource.ToArray();
+                             { Name = a.Key, ByteReceived = a.Value };
+            dataGridView1.Rows.Add(datasource.ToArray());
         }
         public void DisplayMessage(string fileName)
         {

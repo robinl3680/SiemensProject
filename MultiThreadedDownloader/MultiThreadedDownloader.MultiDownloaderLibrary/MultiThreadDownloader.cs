@@ -41,7 +41,7 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
 
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
-            h(fileName, double.Parse(e.BytesReceived.ToString()));
+            h(fileName, double.Parse(e.BytesReceived.ToString()),int.Parse(Math.Truncate(percentage).ToString()));
             
         }
         private void Client_DownloadCompleted(object sender, AsyncCompletedEventArgs e, string fileName,DownloadComplete d)
