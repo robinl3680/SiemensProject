@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 namespace Supporter
 {
-    public delegate void HelperDownload(string fileName, double x, int y);
+    public delegate void HelperDownload(DisplayClass displayProgress);
     public delegate void DownloadComplete(string fileName);
     public delegate void IntenetSlow(string message);
     public class DisplayClass
     {
         public string FileName { get; set; }
         public double ByteReceived { get; set; }
+        public int PercentageCompleted { get; set; }
         public DisplayClass()
         {
 
         }
-        public DisplayClass(string name, double bytesto)
+        public DisplayClass(string name, double bytesto, int percentage)
         {
             this.ByteReceived = bytesto;
             this.FileName = name;
+            this.PercentageCompleted = percentage;
         }
     }
 }

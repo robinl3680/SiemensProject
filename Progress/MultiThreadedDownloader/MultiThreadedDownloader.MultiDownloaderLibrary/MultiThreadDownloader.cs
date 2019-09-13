@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Supporter;
 using System.IO;
 using System.Configuration;
+using System.Net.NetworkInformation;
 namespace MultiThreadedDownloader.MultiDownloaderLibrary
 {
     
@@ -16,11 +17,9 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
     {
         
         
-        public void DownloadHelperDownload(string url,HelperDownload h,DownloadComplete d,IntenetSlow s)
+        public async Task DownloadHelperDownloadAsync(string url,HelperDownload h,DownloadComplete d,IntenetSlow s)
         {
-            try
-            {
-
+           
                 if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
                 {
 
@@ -29,31 +28,55 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
                     string fileName = fileParts.Last();
 
                     Uri urlDownload = new Uri(url, UriKind.Absolute);
-                    client.DownloadFileAsync(urlDownload, $"{ConfigurationManager.AppSettings["FILE_PATH"]}\\{fileName}");
-                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler((send, ex) => Client_DownloadProgress(send, ex, fileName, h, s));
-                    client.DownloadFileCompleted += new AsyncCompletedEventHandler((send, ex) => Client_DownloadCompleted(send, ex, fileName, d));
 
+
+                
+                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler((send, ex) => Client_DownloadProgress(send, ex, fileName, h, s));
+              
+                
+                    client.DownloadFileCompleted += new AsyncCompletedEventHandler((send, ex) => Client_DownloadCompleted(send, ex, fileName, d));
+                
+                
+                 NetworkChange.NetworkAvailabilityChanged += (sx, ex) => AvailabilityChanged(sx, ex, s,fileName);
+                               
+                await client.DownloadFileTaskAsync(urlDownload, $"{ConfigurationManager.AppSettings["FILE_PATH"]}\\{fileName}");
 
                 }
-            }
-            catch (Exception ex)
+
+
+     
+            
+        }
+        public void AvailabilityChanged(object sender,NetworkAvailabilityEventArgs e,IntenetSlow s, string filename)
+        {
+            if (e.IsAvailable)
             {
-                s(ex.ToString());
+                s($"Connection Established : {filename}");
             }
-            
-           
-            
-            
+            else
+            {
+                s($"Connection Not Available : {filename}");
+            }
         }
         public void Client_DownloadProgress(object sender, DownloadProgressChangedEventArgs e, string fileName,HelperDownload h,IntenetSlow s)
         {
             try
             {
-                double bytesIn = double.Parse(e.BytesReceived.ToString());
+                DisplayClass displayProgress = new DisplayClass();
+                displayProgress.FileName = fileName;
+                displayProgress.ByteReceived = double.Parse(e.BytesReceived.ToString());
+
+
+
+                //double bytesIn = double.Parse(e.BytesReceived.ToString());
 
                 double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
-                double percentage = bytesIn / totalBytes * 100;
-                h(fileName, double.Parse(e.BytesReceived.ToString()), int.Parse(Math.Truncate(percentage).ToString()));
+                double percentage = displayProgress.ByteReceived / totalBytes * 100;
+
+                displayProgress.PercentageCompleted = int.Parse(Math.Truncate(percentage).ToString());
+                h(displayProgress);
+
+                //h(fileName, double.Parse(e.BytesReceived.ToString()), int.Parse(Math.Truncate(percentage).ToString()));
 
             }
             catch(Exception ex)

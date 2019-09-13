@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Net;
 using MultiThreadedDownloader.MultiDownloaderLibrary;
 using Supporter;
 namespace MultiThreadedDownloader.UserInterface
@@ -24,38 +25,64 @@ namespace MultiThreadedDownloader.UserInterface
             dataGridView1.Columns.Add("Bytes", "Bytes");
             dataGridView1.Columns.Add("Status", "Status");
         }
-        public void UpdateProgress(string fileName,double x,int y)
+        //public void UpdateProgress(string fileName,double x,int y)
+        //{
+        //    displays[fileName] = x;
+        //    if(dataGridView1.Rows.Count > 1)
+        //    {
+        //        foreach(DataGridViewRow row in dataGridView1.Rows)
+        //        {
+        //            if(row.Cells[0].Value != null && row.Cells[0].Value.ToString() != String.Empty)
+        //            {
+        //                if(displays.ContainsKey(row.Cells[0].Value.ToString()) && row.Cells[0].Value.ToString() == fileName)
+        //                {
+        //                    row.Cells[1].Value = x;
+        //                    row.Cells[2].Value = $"{y}%";
+        //                    break;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                dataGridView1.Rows.Add(fileName, x);
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        dataGridView1.Rows.Add(fileName,x);
+        //    }
+        //}
+
+        public void UpdateProgress(DisplayClass displayProgress)
         {
-            //prgs_download.Value = y;
-            //lbl_prgrs.Text = fileName;
-            //DisplayClass display = new DisplayClass { FileName = fileName, ByteReceived = x };
-            //List<DisplayClass> displays = new List<DisplayClass> { display };
-            displays[fileName] = x;
-            if(dataGridView1.Rows.Count > 1)
+            displays[displayProgress.FileName] = displayProgress.ByteReceived;
+            if (dataGridView1.Rows.Count > 1)
             {
-                foreach(DataGridViewRow row in dataGridView1.Rows)
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if(row.Cells[0].Value != null && row.Cells[0].Value.ToString() != String.Empty)
+                    if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() != String.Empty)
                     {
-                        if(displays.ContainsKey(row.Cells[0].Value.ToString()) && row.Cells[0].Value.ToString() == fileName)
+                        if (displays.ContainsKey(row.Cells[0].Value.ToString()) && row.Cells[0].Value.ToString() == displayProgress.FileName)
                         {
-                            row.Cells[1].Value = x;
-                            row.Cells[2].Value = $"{y}%";
+                            row.Cells[1].Value = displayProgress.ByteReceived;
+                            row.Cells[2].Value = $"{displayProgress.PercentageCompleted}%";
                             break;
                         }
                     }
                     else
                     {
-                        dataGridView1.Rows.Add(fileName, x);
+                        dataGridView1.Rows.Add(displayProgress.FileName, displayProgress.ByteReceived);
                         break;
                     }
                 }
             }
             else
             {
-                dataGridView1.Rows.Add(fileName,x);
+                dataGridView1.Rows.Add(displayProgress.FileName, displayProgress.ByteReceived);
             }
         }
+
         public void PrintMessage(string message)
         {
             MessageBox.Show(message);
@@ -79,14 +106,40 @@ namespace MultiThreadedDownloader.UserInterface
                 }
             }
         }
-        private void Btn_download_Click(object sender, EventArgs e)
+        private void Btn_download_ClickAsync(object sender, EventArgs e)
         {
             string url = txt_url.Text;
             downloader = new MultiThreadDownloader();
             HelperDownload h = this.UpdateProgress;
             DownloadComplete d = this.DisplayMessage;
-            IntenetSlow slow = this.DisplayMessage;
-            downloader.DownloadHelperDownload(url,h,d,slow);
+            IntenetSlow slow = this.PrintMessage;
+            //string[] urls = { "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1280_10MG.mp4",
+            //    "https://file-examples.com/wp-content/uploads/2017/10/file_example_ODP_1MB.odp",
+            //    "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4",
+            //    "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4",
+            //                  "http://www.quintic.com/software/sample_videos/Equine%20Walk%20400fps.avi",
+            //                  "http://www.quintic.com/software/sample_videos/Equine_Trot_400fps_Left.avi",
+            //                   "http://www.quintic.com/software/sample_videos/AutoTracking_CyclingSV90rpm.avi",
+            //                    "http://www.quintic.com/software/sample_videos/AutoTracking_CyclingFV90rpm.avi"};
+
+            try
+            {
+
+                //foreach (string url1 in urls)
+                //{
+                //    downloader.DownloadHelperDownloadAsync(url1, h, d, slow);
+                //}
+
+
+                downloader.DownloadHelperDownloadAsync(url, h, d, slow);
+
+
+            }
+            catch (WebException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            
         }
 
         private void Txt_url_TextChanged(object sender, EventArgs e)

@@ -43,7 +43,7 @@
             this.btn_download.TabIndex = 0;
             this.btn_download.Text = "Download";
             this.btn_download.UseVisualStyleBackColor = true;
-            this.btn_download.Click += new System.EventHandler(this.Btn_download_Click);
+            this.btn_download.Click += new System.EventHandler(this.Btn_download_ClickAsync);
             // 
             // txt_url
             // 
