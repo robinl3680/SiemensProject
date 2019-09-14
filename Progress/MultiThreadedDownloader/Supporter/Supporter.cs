@@ -14,6 +14,7 @@ namespace Supporter
         public string FileName { get; set; }
         public double ByteReceived { get; set; }
         public int PercentageCompleted { get; set; }
+        public double TotalBytes { get; set; }
         public DisplayClass()
         {
 

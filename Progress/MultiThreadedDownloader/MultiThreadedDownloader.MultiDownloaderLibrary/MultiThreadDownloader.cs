@@ -17,7 +17,7 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
     {
         
         
-        public async Task DownloadHelperDownloadAsync(string url,HelperDownload h,DownloadComplete d,IntenetSlow s)
+        public  async Task DownloadHelperDownloadAsync(string url,HelperDownload h,DownloadComplete d,IntenetSlow s)
         {
            
                 if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
@@ -37,9 +37,9 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
                     client.DownloadFileCompleted += new AsyncCompletedEventHandler((send, ex) => Client_DownloadCompleted(send, ex, fileName, d));
                 
                 
-                 NetworkChange.NetworkAvailabilityChanged += (sx, ex) => AvailabilityChanged(sx, ex, s,fileName);
+                    NetworkChange.NetworkAvailabilityChanged += (sx, ex) => AvailabilityChanged(sx, ex, s,fileName);
                                
-                await client.DownloadFileTaskAsync(urlDownload, $"{ConfigurationManager.AppSettings["FILE_PATH"]}\\{fileName}");
+                    await client.DownloadFileTaskAsync(urlDownload, $"{ConfigurationManager.AppSettings["FILE_PATH"]}\\{fileName}");
 
                 }
 
@@ -62,6 +62,7 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
         {
             try
             {
+                
                 DisplayClass displayProgress = new DisplayClass();
                 displayProgress.FileName = fileName;
                 displayProgress.ByteReceived = double.Parse(e.BytesReceived.ToString());
@@ -72,7 +73,7 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
 
                 double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
                 double percentage = displayProgress.ByteReceived / totalBytes * 100;
-
+                displayProgress.TotalBytes = totalBytes;
                 displayProgress.PercentageCompleted = int.Parse(Math.Truncate(percentage).ToString());
                 h(displayProgress);
 
@@ -88,6 +89,7 @@ namespace MultiThreadedDownloader.MultiDownloaderLibrary
         }
         private void Client_DownloadCompleted(object sender, AsyncCompletedEventArgs e, string fileName,DownloadComplete d)
         {
+            
             d(fileName);
         }
 

@@ -10,18 +10,17 @@ namespace MultithreadedDownloader.ConsoleInterFace
 {
     class Program
     {
+        static Dictionary<string, double> dict = new Dictionary<string, double>();
         static void DisplayDetails(DisplayClass disp)
         {
-            Dictionary<string, double> dict = new Dictionary<string, double>();
+            
             dict[disp.FileName] = disp.ByteReceived;
-            foreach(KeyValuePair<string,double> items in dict)
-            {
-                Console.WriteLine($"{items.Key} : {items.Value}");
-            }
+            
+                Console.WriteLine($"{disp.FileName} : {disp.ByteReceived}");
         }
         static void DonwloadComp(string disp)
         {
-            //Console.WriteLine($"{disp} Completed");
+            Console.WriteLine($"{disp} : Completed");
         }
         static void ErrorHandle(string message)
         {
@@ -36,19 +35,22 @@ namespace MultithreadedDownloader.ConsoleInterFace
             DownloadComplete d = DonwloadComp;
             MultiThreadDownloader downloader;
             IntenetSlow e = ErrorHandle;
-            
-            while(true)
-            {
-               
+            Task t;
+            int k = 0;
+            List<Task> tasks = new List<Task>();
+             
                 foreach (string url in urls)
                 {
                     downloader = new MultiThreadDownloader();
-                    downloader.DownloadHelperDownloadAsync(url, h, d, e);
-                    
+                    t = downloader.DownloadHelperDownloadAsync(url, h, d, e);
+                   
+                    tasks.Add(t);
                 }
-                
-            }
-            
+            //k++;
+
+
+              Task.WaitAll(tasks.ToArray());
+
         }
     }
 }

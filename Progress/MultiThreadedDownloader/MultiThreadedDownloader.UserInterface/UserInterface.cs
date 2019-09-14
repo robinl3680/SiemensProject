@@ -24,6 +24,7 @@ namespace MultiThreadedDownloader.UserInterface
             dataGridView1.Columns.Add("Name", "Name");
             dataGridView1.Columns.Add("Bytes", "Bytes");
             dataGridView1.Columns.Add("Status", "Status");
+           
         }
         //public void UpdateProgress(string fileName,double x,int y)
         //{
@@ -57,6 +58,7 @@ namespace MultiThreadedDownloader.UserInterface
         public void UpdateProgress(DisplayClass displayProgress)
         {
             displays[displayProgress.FileName] = displayProgress.ByteReceived;
+            
             if (dataGridView1.Rows.Count > 1)
             {
                 foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -106,32 +108,30 @@ namespace MultiThreadedDownloader.UserInterface
                 }
             }
         }
-        private void Btn_download_ClickAsync(object sender, EventArgs e)
+        private  void Btn_download_ClickAsync(object sender, EventArgs e)
         {
             string url = txt_url.Text;
             downloader = new MultiThreadDownloader();
+           
             HelperDownload h = this.UpdateProgress;
             DownloadComplete d = this.DisplayMessage;
             IntenetSlow slow = this.PrintMessage;
-            //string[] urls = { "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1280_10MG.mp4",
-            //    "https://file-examples.com/wp-content/uploads/2017/10/file_example_ODP_1MB.odp",
-            //    "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4",
-            //    "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1920_18MG.mp4",
-            //                  "http://www.quintic.com/software/sample_videos/Equine%20Walk%20400fps.avi",
-            //                  "http://www.quintic.com/software/sample_videos/Equine_Trot_400fps_Left.avi",
-            //                   "http://www.quintic.com/software/sample_videos/AutoTracking_CyclingSV90rpm.avi",
-            //                    "http://www.quintic.com/software/sample_videos/AutoTracking_CyclingFV90rpm.avi"};
+            string[] urls = { "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_1280_10MG.mp4",
+                "https://file-examples.com/wp-content/uploads/2017/10/file_example_ODP_1MB.odp",
+                "http://www.quintic.com/software/sample_videos/AutoTracking_CyclingFV90rpm.avi"};
 
             try
             {
+                Task t = null;
+                foreach (string url1 in urls)
+                {
+                      t = downloader.DownloadHelperDownloadAsync(url1, h, d, slow);
+                      
+                }
+               
 
-                //foreach (string url1 in urls)
-                //{
-                //    downloader.DownloadHelperDownloadAsync(url1, h, d, slow);
-                //}
 
-
-                downloader.DownloadHelperDownloadAsync(url, h, d, slow);
+                //downloader.DownloadHelperDownloadAsync(url, h, d, slow);
 
 
             }
