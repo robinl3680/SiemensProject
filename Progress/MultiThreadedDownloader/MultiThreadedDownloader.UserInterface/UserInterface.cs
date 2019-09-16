@@ -123,15 +123,15 @@ namespace MultiThreadedDownloader.UserInterface
             try
             {
                 Task t = null;
-                foreach (string url1 in urls)
-                {
-                      t = downloader.DownloadHelperDownloadAsync(url1, h, d, slow);
-                      
-                }
-               
+                //foreach (string url1 in urls)
+                //{
+                //      t = downloader.DownloadHelperDownloadAsync(url1, h, d, slow);
+
+                //}
 
 
-                //downloader.DownloadHelperDownloadAsync(url, h, d, slow);
+
+                t = downloader.DownloadHelperDownloadAsync(url, h, d, slow);
 
 
             }
