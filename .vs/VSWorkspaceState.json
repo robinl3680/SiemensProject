@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\MultiThreadedDownloader"
+    "\\Progress",
+    "\\Progress\\MultiThreadedDownloader"
   ],
-  "SelectedNode": "\\MultiThreadedDownloader\\MultiThreadedDownloader.sln",
+  "SelectedNode": "\\Progress\\MultiThreadedDownloader\\MultiThreadedDownloader.sln",
   "PreviewInSolutionExplorer": false
 }
