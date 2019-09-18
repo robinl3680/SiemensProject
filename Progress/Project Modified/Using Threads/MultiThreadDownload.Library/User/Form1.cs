@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,14 +14,21 @@ namespace User
     public partial class Form1 : Form
     {
         Dictionary<string, double> displays = new Dictionary<string, double>();
+
+        public void GetExceptionMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+
         public Form1()
         {
             InitializeComponent();
             dataGridView1.Columns.Add("File Name", "File Name");
             dataGridView1.Columns.Add("KBytes", "KBytes");
+            dataGridView1.Columns.Add("Thread ID", "Thread ID");
             
         }
-       public  void print(string name,double totalbytes)
+       public void print(string name,double totalbytes, int threadId)
         {
             totalbytes = totalbytes / 1024;
             totalbytes = Math.Ceiling(totalbytes);
@@ -28,11 +36,11 @@ namespace User
             //MessageBox.Show($"{name} : {totalbytes}");
             try
             {
-                dataGridView1.Rows.Add(name, totalbytes);
+                dataGridView1.Rows.Add(name, totalbytes, threadId);
             }
             catch(Exception ex)
             {
-
+                MessageBox.Show(ex.ToString());
             }
             
         }
@@ -55,12 +63,30 @@ namespace User
             "http://mirrors.standaloneinstaller.com/video-sample/lion-sample.avi",
             "http://mirrors.standaloneinstaller.com/video-sample/page18-movie-4.avi"};
             message m = print;
-            Helper h = new Helper(m);
-            foreach(string url in urls)
+            exceptionMessage exceptionMessage = this.GetExceptionMessage;
+            Helper h = new Helper(m, exceptionMessage);
+            
+            try
             {
-                h.InsertToQueue(url);
+                foreach (string url in urls)
+                {
+                    h.InsertToQueue(url);
+                }
+                h.StartDownload();
             }
-            h.StartDownload();
+            catch (UrlNotWellFormedException ex)
+            {
+                exceptionMessage(ex.ToString());
+            }
+            catch (WebException ex)
+            {
+                exceptionMessage(ex.ToString());
+            }
+            catch (Exception ex)
+            {
+                exceptionMessage(ex.ToString());
+            }
+
         }
 
        

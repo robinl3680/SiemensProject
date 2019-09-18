@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{50438008-D6FE-406E-A411-2C62C0EF3ADF}</ProjectGuid>
+    <ProjectGuid>{E774DA1B-37D5-4824-A073-8B9D4717C38C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>User</RootNamespace>
-    <AssemblyName>User</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>UserInterface</RootNamespace>
+    <AssemblyName>UserInterface</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -67,7 +66,6 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -83,9 +81,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MultiThreadDownload.Library\MultiThreadDownload.Library.csproj">
-      <Project>{fc68fe9f-e8d0-46df-a408-3d2dd01b1eb9}</Project>
-      <Name>MultiThreadDownload.Library</Name>
+    <ProjectReference Include="..\MultiThreadDownloader\MultiThreadDownloader.csproj">
+      <Project>{ae466f8a-79bb-43a5-95bb-6dd50a5a16c2}</Project>
+      <Name>MultiThreadDownloader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,11 +9,17 @@ namespace SampleUI
 {
     class Program
     {
-        public static void printmessage(string message,double bytes)
+        public static void printmessage(string message,double bytes, int threadID)
         {
-            Console.WriteLine($"{message} : {bytes}");
-            //Thread.Sleep(5000);
+            Console.WriteLine($"{message} : {bytes} : {threadID}");
+            
         }
+
+        public static void GetExceptionMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+
         public static void Main()
         {
             string[] urls = new string[] { "https://file-examples.com/wp-content/uploads/2017/10/file_example_ODP_1MB.odp",
@@ -32,7 +38,8 @@ namespace SampleUI
             "http://mirrors.standaloneinstaller.com/video-sample/lion-sample.avi",
             "http://mirrors.standaloneinstaller.com/video-sample/page18-movie-4.avi"};
             message m = printmessage;
-            Helper h = new Helper(m);
+            exceptionMessage message = GetExceptionMessage;
+            Helper h = new Helper(m, message);
             foreach (string url in urls)
             {
                 h.InsertToQueue(url);
