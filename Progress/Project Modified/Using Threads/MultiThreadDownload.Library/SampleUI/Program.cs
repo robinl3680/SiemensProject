@@ -44,7 +44,15 @@ namespace SampleUI
             {
                 h.InsertToQueue(url);
             }
-            h.StartDownload();
+            try
+            {
+                h.StartDownload();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            
             Thread.Sleep(200000);
         }
     }
